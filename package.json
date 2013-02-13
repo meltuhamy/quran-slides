@@ -1,0 +1,12 @@
+{
+  "name": "quran-slides",
+  "description": "Allows anyone to create a simple presentation using selected verses from the Quran.",
+  "version": "0.0.1",
+  "author": "Mohamed Eltuhamy <tuhamy@gmail.com>",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "license": "MIT",
+  "engine": "node >= 0.6.12"
+}
