@@ -71,6 +71,20 @@ var doReveal = function(){
 }
 
 $(document).ready(function(){
+  var request = $.ajax({
+    url: "http://quran.com/quran/ajax?s=2&sA=1&eA=12&json=0",
+    data: {s : 2, sA: 1, eA: 12, json:1},
+    dataType: "jsonp"
+  });
+   
+  request.done(function(msg) {
+    console.log(msg)
+  });
+   
+  request.fail(function(jqXHR, textStatus) {
+    alert( "Request failed: " + textStatus );
+  });
+
   var verseRequest = paseVersesRequest(window.location.search);
   console.log(verseRequest);
   var doRange = false;

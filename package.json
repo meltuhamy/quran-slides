@@ -4,9 +4,10 @@
   "version": "0.0.1",
   "author": "Mohamed Eltuhamy <tuhamy@gmail.com>",
   "dependencies": {
+    "node-static": "0.6.5"
   },
   "devDependencies": {
   },
   "license": "MIT",
-  "engine": "node >= 0.6.12"
+  "engine": "node >= 0.4.1"
 }
