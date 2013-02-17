@@ -18,7 +18,7 @@ var createSlideSequence = function(surah, startVerse, endVerse){
 
 var paseVersesRequest = function(request){
   //Take off the first hash
-  var requestArray = request.substring(1).split('/');
+  var requestArray = request.substring(1).split(':');
 
   // The following string is either a number or a hiphenation of 2 numbers (eg 4-5)
   var verseRequest = requestArray[1] != undefined ? requestArray[1].split('-') : [];
@@ -60,7 +60,29 @@ var doReveal = function(){
 }
 
 $(document).ready(function(){
-  createSlideSequence(1,1,7); //Insert ayas for surah 1 verses 1-7
-  console.log(paseVersesRequest(window.location.search));
-  doReveal(); // Start presentation
+  var verseRequest = paseVersesRequest(window.location.search);
+  console.log(verseRequest);
+  var doRange = false;
+  var doVerse = false;
+  var doSurah = verseRequest.surah !== NaN;
+  if(doSurah && verseRequest.type != 'error'){
+    doRange = (verseRequest.type == 'range' && verseRequest.startVerse != NaN && verseRequest.endVerse != NaN);
+    doVerse = (verseRequest.type == 'verse' && verseRequest.startVerse != NaN);
+    if(doSurah && doRange){
+      createSlideSequence(verseRequest.surah, verseRequest.startVerse, verseRequest.endVerse);
+      doReveal(); // Start presentation
+    } else if(doSurah && doVerse && !doRange){
+      createNewSlide(verseRequest.surah, verseRequest.startVerse);
+      doReveal(); // Start presentation
+    }
+  } else {
+    if(doSurah){
+      alert('Surah-only requests coming soon');
+    }
+    alert("Please add a request to your url, e.g. "+window.location.origin+window.location.host+window.location.pathname+"?1:1");
+  }
+
+
+
+
 });
