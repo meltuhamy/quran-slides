@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "author": "Mohamed Eltuhamy <tuhamy@gmail.com>",
   "dependencies": {
-    "node-static": "0.6.5"
   },
   "devDependencies": {
   },
