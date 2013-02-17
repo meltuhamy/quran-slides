@@ -1,5 +1,15 @@
 var container = $('.slides');
 var isRetina = true;
+// TODO: Translations
+// 
+// var baseUrl = 'http://quran.com/quran/ajax?s=2&sA=1&eA=12&json=0';
+// Format: json.verses[11][6].ayah.text -- 11 is ayah id, 6 is translation id...
+// 
+// do this with response: 
+// for(var x in json.verses){
+//   console.log(json.verses[x][6].ayah.text);
+// }
+
 var getVerseImageURL = function(surah, verse){
   var baseUrl = isRetina ? "http://quran.com/images/ayat_retina/" : "http://c00022506.cdn1.cloudfiles.rackspacecloud.com/";
   return baseUrl+surah+"_"+verse+".png";
