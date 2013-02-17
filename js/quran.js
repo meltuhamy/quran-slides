@@ -16,6 +16,24 @@ var createSlideSequence = function(surah, startVerse, endVerse){
   }
 }
 
+var paseVersesRequest = function(request){
+  //Take off the first hash
+  var requestArray = request.substring(1).split('/');
+
+  // The following string is either a number or a hiphenation of 2 numbers (eg 4-5)
+  var verseRequest = requestArray[1] != undefined ? requestArray[1].split('-') : [];
+  var verseRequestType = verseRequest.length === 1 ? 'verse' : verseRequest.length === 2 ? 'range' : 'error';
+
+  return {
+    surah: parseInt(requestArray[0]), // The first number is the surah number
+    type: verseRequestType,
+    startVerse: parseInt(verseRequest[0]),
+    endVerse: parseInt(verseRequest[1])
+  }
+
+
+}
+
 var doReveal = function(){
   // Full list of configuration options available here:
   // https://github.com/hakimel/reveal.js#configuration
@@ -43,5 +61,6 @@ var doReveal = function(){
 
 $(document).ready(function(){
   createSlideSequence(1,1,7); //Insert ayas for surah 1 verses 1-7
+  console.log(paseVersesRequest(window.location.search));
   doReveal(); // Start presentation
 });
