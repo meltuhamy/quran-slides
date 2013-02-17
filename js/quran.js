@@ -1,5 +1,6 @@
+var root = (typeof exports == 'undefined' ? window : exports);
 var container = $('.slides');
-var isRetina = true;
+var isRetina = (root.devicePixelRatio > 1) || (root.matchMedia && root.matchMedia("(-webkit-min-device-pixel-ratio: 1.5),(min--moz-device-pixel-ratio: 1.5),(-o-min-device-pixel-ratio: 3/2),(min-resolution: 1.5dppx)").matches);
 // TODO: Translations
 // 
 // var baseUrl = 'http://quran.com/quran/ajax?s=2&sA=1&eA=12&json=0';
