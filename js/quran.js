@@ -1,15 +1,7 @@
 var root = (typeof exports == 'undefined' ? window : exports);
 var container = $('.slides');
 var isRetina = (root.devicePixelRatio > 1) || (root.matchMedia && root.matchMedia("(-webkit-min-device-pixel-ratio: 1.5),(min--moz-device-pixel-ratio: 1.5),(-o-min-device-pixel-ratio: 3/2),(min-resolution: 1.5dppx)").matches);
-// TODO: Translations
-// 
-// var baseUrl = 'http://quran.com/quran/ajax?s=2&sA=1&eA=12&json=0';
-// Format: json.verses[11][6].ayah.text -- 11 is ayah id, 6 is translation id...
-// 
-// do this with response: 
-// for(var x in json.verses){
-//   console.log(json.verses[x][6].ayah.text);
-// }
+var surahVerses = [];
 
 var getVerseImageURL = function(surah, verse){
   var baseUrl = isRetina ? "http://quran.com/images/ayat_retina/" : "http://c00022506.cdn1.cloudfiles.rackspacecloud.com/";
@@ -17,8 +9,10 @@ var getVerseImageURL = function(surah, verse){
 }
 
 var createNewSlide = function(surah, verse){
-  var html = "<section><p><img src='"+getVerseImageURL(surah, verse)+"' /></p><p><small>"+surah+":"+verse+"</small></p></section>";
+  var verseNum = Quran.verseNo.ayah(surah, verse);
+  var html = "<section><p><img src='"+getVerseImageURL(surah, verse)+"' /></p><p class='v"+verseNum+"'></p><p><small>"+surah+":"+verse+"</small></p></section>";
   $(container).append(html)
+
 }
 
 var createSlideSequence = function(surah, startVerse, endVerse){
@@ -71,20 +65,6 @@ var doReveal = function(){
 }
 
 $(document).ready(function(){
-  var request = $.ajax({
-    url: "http://quran.com/quran/ajax?s=2&sA=1&eA=12&json=0",
-    data: {s : 2, sA: 1, eA: 12, json:1},
-    dataType: "jsonp"
-  });
-   
-  request.done(function(msg) {
-    console.log(msg)
-  });
-   
-  request.fail(function(jqXHR, textStatus) {
-    alert( "Request failed: " + textStatus );
-  });
-
   var verseRequest = paseVersesRequest(window.location.search);
   console.log(verseRequest);
   var doRange = false;
@@ -93,21 +73,39 @@ $(document).ready(function(){
   if(doSurah && verseRequest.type != 'error'){
     doRange = (verseRequest.type == 'range' && verseRequest.startVerse != NaN && verseRequest.endVerse != NaN);
     doVerse = (verseRequest.type == 'verse' && verseRequest.startVerse != NaN);
-    if(doSurah && doRange){
-      createSlideSequence(verseRequest.surah, verseRequest.startVerse, verseRequest.endVerse);
-      doReveal(); // Start presentation
-    } else if(doSurah && doVerse && !doRange){
-      createNewSlide(verseRequest.surah, verseRequest.startVerse);
-      doReveal(); // Start presentation
+    if(doSurah){
+      if(doSurah && doRange){
+        createSlideSequence(verseRequest.surah, verseRequest.startVerse, verseRequest.endVerse);
+      } else if(doSurah && doVerse && !doRange){
+        createNewSlide(verseRequest.surah, verseRequest.startVerse);
+      }
+      $.ajax({
+        url :"http://api.globalquran.com/surah/"+verseRequest.surah+"/en.shakir",
+        data: {jsoncallback:true, format: 'jsonp'},
+        dataType :"jsonp",
+        cache: true, 
+        jsonpCallback: 'quranData',
+        success : function(data){
+          var start = Quran.verseNo.ayah(verseRequest.surah, verseRequest.startVerse);
+          var end = doRange? verseRequest.endVerse : verseRequest.startVerse;
+          for(var i = start; i<=end; i++){
+            $('.v'+i).html(data.quran['en.shakir'][i].verse);
+          }
+          
+          doReveal();
+        },
+        error : function(httpReq,status,exception){
+          alert(status+" "+exception);
+        }
+      });
     }
+
+
   } else {
     if(doSurah){
       alert('Surah-only requests coming soon');
     }
     alert("Please add a request to your url, e.g. "+window.location.origin+window.location.host+window.location.pathname+"?1:1");
   }
-
-
-
 
 });
