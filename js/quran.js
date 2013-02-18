@@ -66,19 +66,15 @@ var doReveal = function(){
 
 $(document).ready(function(){
   var verseRequest = paseVersesRequest(window.location.search);
-  console.log(verseRequest);
   var doRange = false;
   var doVerse = false;
   var doSurah = verseRequest.surah !== NaN;
   if(doSurah && verseRequest.type != 'error'){
     doRange = (verseRequest.type == 'range' && verseRequest.startVerse != NaN && verseRequest.endVerse != NaN);
-    doVerse = (verseRequest.type == 'verse' && verseRequest.startVerse != NaN);
     if(doSurah){
-      if(doSurah && doRange){
-        createSlideSequence(verseRequest.surah, verseRequest.startVerse, verseRequest.endVerse);
-      } else if(doSurah && doVerse && !doRange){
-        createNewSlide(verseRequest.surah, verseRequest.startVerse);
-      }
+      var endVerse = doRange? verseRequest.endVerse : verseRequest.startVerse;
+      var startVerse = verseRequest.startVerse;
+      createSlideSequence(verseRequest.surah, startVerse, endVerse);
       $.ajax({
         url :"http://api.globalquran.com/surah/"+verseRequest.surah+"/en.shakir",
         data: {jsoncallback:true, format: 'jsonp'},
@@ -86,10 +82,11 @@ $(document).ready(function(){
         cache: true, 
         jsonpCallback: 'quranData',
         success : function(data){
-          var start = Quran.verseNo.ayah(verseRequest.surah, verseRequest.startVerse);
-          var end = doRange? verseRequest.endVerse : verseRequest.startVerse;
+          var start = Quran.verseNo.ayah(verseRequest.surah, startVerse);
+          var end = Quran.verseNo.ayah(verseRequest.surah, endVerse);
           for(var i = start; i<=end; i++){
             $('.v'+i).html(data.quran['en.shakir'][i].verse);
+            console.log(data.quran['en.shakir'][i].verse);
           }
           
           doReveal();
