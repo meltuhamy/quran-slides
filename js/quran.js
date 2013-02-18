@@ -86,7 +86,6 @@ $(document).ready(function(){
           var end = Quran.verseNo.ayah(verseRequest.surah, endVerse);
           for(var i = start; i<=end; i++){
             $('.v'+i).html(data.quran['en.shakir'][i].verse);
-            console.log(data.quran['en.shakir'][i].verse);
           }
           
           doReveal();
