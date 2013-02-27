@@ -108,6 +108,15 @@ var quranSlides = function(config){
         }
         window.location = window.location.origin+window.location.host+window.location.pathname+"?1:1-7";
       }
+    },
+
+    getSelectRangeGui: function(id){
+      return "<section><p>Select a surah and verse</p></section>";
+    },
+
+    displaySelectRangeGui: function(){
+      $(container).html(this.getSelectRangeGui('rangeSelection'));
+      Reveal.left();
     }
 
   };
@@ -115,6 +124,8 @@ var quranSlides = function(config){
   return that;
 
 }
+
+
 
 var qs = quranSlides({
   container: '.slides'
