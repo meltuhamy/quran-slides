@@ -103,10 +103,9 @@ var quranSlides = function(config){
 
 
       } else {
-        if(doSurah){
-          console.log('Surah-only requests coming soon');
-        }
-        window.location = window.location.origin+window.location.host+window.location.pathname+"?1:1-7";
+        console.log("Surah not selected");
+        this.displaySelectRangeGui();
+        this.doReveal();
       }
     },
 
@@ -116,7 +115,6 @@ var quranSlides = function(config){
 
     displaySelectRangeGui: function(){
       $(container).html(this.getSelectRangeGui('rangeSelection'));
-      Reveal.left();
     }
 
   };
