@@ -101,7 +101,6 @@ var quranSlides = function(config){
           });
         }
 
-
       } else {
         console.log("Surah not selected");
         this.displaySelectRangeGui();
@@ -110,7 +109,7 @@ var quranSlides = function(config){
     },
 
     getSelectRangeGui: function(id){
-      return "<section><p>Select a surah and verse</p></section>";
+      return "<section><p>Select a surah</p><p><select><option value='1'>1. Al Fatiha</option></select></p><p><button id='selectedSurah'>Next</button></p></section>";
     },
 
     displaySelectRangeGui: function(){
@@ -118,6 +117,7 @@ var quranSlides = function(config){
     }
 
   };
+
 
   return that;
 
