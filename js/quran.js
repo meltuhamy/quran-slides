@@ -102,14 +102,19 @@ var quranSlides = function(config){
         }
 
       } else {
-        console.log("Surah not selected");
         this.displaySelectRangeGui();
         this.doReveal();
       }
     },
 
     getSelectRangeGui: function(id){
-      return "<section><p>Select a surah</p><p><select><option value='1'>1. Al Fatiha</option></select></p><p><button id='selectedSurah'>Next</button></p></section>";
+      var surahs = Quran._data.Surah;
+      var options = "";
+      for(var i=1; i<surahs.length; i++){
+        // Create a new option
+        options += "<option value='"+i+"'>"+i+": "+surahs[i][4]+" "+surahs[i][5]+" - "+surahs[i][6]+"</option>";
+      }
+      return "<section><p>Select a chapter</p><p><select>"+options+"</select></p><p><a id='selectedSurah'>Next</a></p></section>";
     },
 
     displaySelectRangeGui: function(){
