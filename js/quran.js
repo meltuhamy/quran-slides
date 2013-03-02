@@ -140,14 +140,15 @@ var quranSlides = function(config){
     },
 
     displaySelectVerseGui: function (surahNumber) {
+      var surah = Quran._data.Surah[surahNumber];
       $(container).html(this.selectVersesGui(surahNumber));
       $('#diffChapter').on('click', function(){
         window.location.search = '';
       });
 
       $('#wholesurah').on('click', function(){
-        alert('Whole surah coming soon!');
-        //TODO: Implement whole surah selection
+        //Get verse range and redirect.
+        window.location.search = surahNumber+':1-' + surah[1];
       });
 
       $('#selectverses').on('click', function(){
