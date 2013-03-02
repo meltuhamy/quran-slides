@@ -28,7 +28,7 @@ var quranSlides = function(config){
       }
     },
 
-    paseVersesRequest: function(request){
+    parseVersesRequest: function(request){
       //Take off the first hash
       var requestArray = request.substring(1).split(':');
 
@@ -70,12 +70,12 @@ var quranSlides = function(config){
     },
 
     onReady: function(){
-      var verseRequest = this.paseVersesRequest(window.location.search);
+      var verseRequest = this.parseVersesRequest(window.location.search);
       var doRange = false;
       var doVerse = false;
-      var doSurah = verseRequest.surah !== NaN;
+      var doSurah = !isNaN(verseRequest.surah);
       if(doSurah && verseRequest.type != 'error'){
-        doRange = (verseRequest.type == 'range' && verseRequest.startVerse != NaN && verseRequest.endVerse != NaN);
+        doRange = (verseRequest.type == 'range' && !isNaN(verseRequest.startVerse) && !isNaN(verseRequest.endVerse));
         if(doSurah){
           var endVerse = doRange? verseRequest.endVerse : verseRequest.startVerse;
           var startVerse = verseRequest.startVerse;
@@ -102,23 +102,61 @@ var quranSlides = function(config){
         }
 
       } else {
-        this.displaySelectRangeGui();
-        this.doReveal();
+        if(doSurah){
+          this.displaySelectVerseGui(verseRequest.surah);
+        } else {
+          this.displaySelectSurahGui();
+        }
       }
     },
 
-    getSelectRangeGui: function(id){
+    selectSurahGui: function(id){
       var surahs = Quran._data.Surah;
       var options = "";
-      for(var i=1; i<surahs.length; i++){
+      for(var i=1; i<=Quran._data.numSurahs; i++){
         // Create a new option
         options += "<option value='"+i+"'>"+i+": "+surahs[i][4]+" "+surahs[i][5]+" - "+surahs[i][6]+"</option>";
       }
-      return "<section><p>Select a chapter</p><p><select>"+options+"</select></p><p><a id='selectedSurah'>Next</a></p></section>";
+      return "<section><p>Select a chapter</p><p><select id='selectSurahSelect'>"+options+"</select></p><p><a id='selectSurahButton'>Next</a></p></section>";
     },
 
-    displaySelectRangeGui: function(){
-      $(container).html(this.getSelectRangeGui('rangeSelection'));
+    selectVersesGui: function(surahNumber){
+      var surahs = Quran._data.Surah;
+      var numVerses = surahs[surahNumber][1];
+      return "<section><p>"+surahs[surahNumber][4]+"</p><p>"+surahs[surahNumber][5]+" - "+surahs[surahNumber][6]+"</p>" +
+          "<small>Display <a id='wholesurah'>whole surah</a> or <a id='selectverses'>select verses</a> to display</small>" +
+          "<p><br /><br /><a id='diffChapter'>Choose a different chapter</a></p></section>";
+
+    },
+
+    displaySelectSurahGui: function(){
+      $(container).html(this.selectSurahGui('rangeSelection'));
+      $('#selectSurahButton').on('click', function(){
+        var selectedSurah = $('#selectSurahSelect').val();
+        window.location.search = selectedSurah;
+      });
+      that.doReveal();
+
+    },
+
+    displaySelectVerseGui: function (surahNumber) {
+      $(container).html(this.selectVersesGui(surahNumber));
+      $('#diffChapter').on('click', function(){
+        window.location.search = '';
+      });
+
+      $('#wholesurah').on('click', function(){
+        alert('Whole surah coming soon!');
+        //TODO: Implement whole surah selection
+      });
+
+      $('#selectverses').on('click', function(){
+        alert('verse selection coming soon!');
+        //TODO: Implement verse selections.
+      });
+
+      that.doReveal();
+
     }
 
   };
