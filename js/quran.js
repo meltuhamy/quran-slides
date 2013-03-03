@@ -124,7 +124,7 @@ var quranSlides = function(config){
       var surahs = Quran._data.Surah;
       var numVerses = surahs[surahNumber][1];
       return "<section><p>"+surahs[surahNumber][4]+"</p><p>"+surahs[surahNumber][5]+" - "+surahs[surahNumber][6]+"</p>" +
-          "<small>Display <a id='wholesurah'>whole surah</a> or <a id='selectverses'>select verses</a> to display</small>" +
+          "<small id='selectversescontainer'>Display <a id='wholesurah'>whole surah</a> or <a id='selectverses'>select verses</a> to display</small>" +
           "<p><br /><br /><a id='diffChapter'>Choose a different chapter</a></p></section>";
 
     },
@@ -152,8 +152,32 @@ var quranSlides = function(config){
       });
 
       $('#selectverses').on('click', function(){
-        alert('verse selection coming soon!');
-        //TODO: Implement verse selections.
+        var verseOptions;
+        for(var i=1; i<=surah[1]; i++){
+          verseOptions += "<option value='"+i+"'>"+i+"</option>";
+        }
+        $("#selectversescontainer").html("Start from verse <select id='startverseselect'>"+verseOptions+"</select> " +
+            "and finish on verse <select id='endverseselect'>"+verseOptions+"</select>. <br /><a id='displayversesbutton'>Go</a>");
+        $('#endverseselect').val(surah[1]);
+
+        $('#startverseselect').on('change', function(){
+          // Get the selected verse
+          var selectedStartVerse = $(this).val();
+          var endVerseOptions = '';
+
+          // Update possible options for endverse
+          // Get old selected value
+          var oldSelectedValue = $('#endverseselect').val();
+          for(var i=selectedStartVerse; i<=surah[1]; i++){
+            endVerseOptions += "<option value='"+i+"'>"+i+"</option>";
+          }
+          $('#endverseselect').html(endVerseOptions);
+
+          //Reselect old value
+          $('#endverseselect').val(oldSelectedValue);
+
+
+        })
       });
 
       that.doReveal();
