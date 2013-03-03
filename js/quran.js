@@ -115,15 +115,16 @@ var quranSlides = function(config){
       var options = "";
       for(var i=1; i<=Quran._data.numSurahs; i++){
         // Create a new option
-        options += "<option value='"+i+"'>"+i+": "+surahs[i][4]+" "+surahs[i][5]+" - "+surahs[i][6]+"</option>";
+        var englishTranslation = surahs[i][5] == surahs[i][6] ? surahs[i][5] : surahs[i][5] + " - " + surahs[i][6];
+        options += "<option value='"+i+"'>"+i+": "+surahs[i][4]+" "+englishTranslation+"</option>";
       }
-      return "<section><p>Select a chapter</p><p><select id='selectSurahSelect'>"+options+"</select></p><p><a id='selectSurahButton'>Next</a></p></section>";
+      return "<section><img src='quran.png' width='100'/><h3>Quran Slides Made Easy</h3><p>Select a chapter</p><p><select id='selectSurahSelect'>"+options+"</select></p><p><a id='selectSurahButton'>Next</a></p></section>";
     },
 
     selectVersesGui: function(surahNumber){
-      var surahs = Quran._data.Surah;
-      var numVerses = surahs[surahNumber][1];
-      return "<section><p>"+surahs[surahNumber][4]+"</p><p>"+surahs[surahNumber][5]+" - "+surahs[surahNumber][6]+"</p>" +
+      var surah = Quran._data.Surah[surahNumber];
+      var englishTranslation = surah[5] == surah[6] ? surah[5] : surah[5] + " - " + surah[6];
+      return "<section><p>"+surah[4]+"</p><p>"+englishTranslation+"</p>" + "<small>A " + surah[7] + " surah with "+ surah[1] + " verses.</small> <br /><br />" +
           "<small id='selectversescontainer'>Display <a id='wholesurah'>whole surah</a> or <a id='selectverses'>select verses</a> to display</small>" +
           "<p><br /><br /><a id='diffChapter'>Choose a different chapter</a></p></section>";
 
