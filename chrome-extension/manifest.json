@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+
+  "name": "Quran Slides for quran websites",
+  "description": "Displays a button on popular Quran websites like Quran.com to allow viewing a presentation with the selected verses.",
+  "version": "1.0",
+  "content_scripts": [
+    {
+      "matches": ["http://quran.com/*"],
+      "js": ["jquery.js", "quranslides.js"]
+    }
+  ]
+}

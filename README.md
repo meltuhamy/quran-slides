@@ -15,4 +15,3 @@ Thanks to everyone who made this possible!
 
 If you're interested in the project and would like more features, feel free to [add an issue](https://github.com/meltuhamy/quran-slides/issues)
  and I'll try and add it soon inshaAllah. Or, why not fork the project and implement them yourself?
- 
