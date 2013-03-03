@@ -157,7 +157,7 @@ var quranSlides = function(config){
           verseOptions += "<option value='"+i+"'>"+i+"</option>";
         }
         $("#selectversescontainer").html("Start from verse <select id='startverseselect'>"+verseOptions+"</select> " +
-            "and finish on verse <select id='endverseselect'>"+verseOptions+"</select>. <br /><a id='displayversesbutton'>Go</a>");
+            "and finish on verse <select id='endverseselect'>"+verseOptions+"</select> <a id='displayversesbutton'>Go</a>");
         $('#endverseselect').val(surah[1]);
 
         $('#startverseselect').on('change', function(){
@@ -177,7 +177,13 @@ var quranSlides = function(config){
           $('#endverseselect').val(oldSelectedValue);
 
 
-        })
+        });
+
+        $('#displayversesbutton').on('click', function(){
+          window.location.search = surahNumber + ":" + $('#startverseselect').val() + "-" + $('#endverseselect').val();
+        });
+
+        that.doReveal();
       });
 
       that.doReveal();
