@@ -34,7 +34,7 @@ var quranSlides = function(config){
 
     createNewSlide: function(surah, verse){
       var verseNum = Quran.verseNo.ayah(surah, verse);
-      var html = "<section><p><img src='"+this.getVerseImageURL(surah, verse)+"' /></p><p class='v"+verseNum+"'></p><p><small>"+surah+":"+verse+"</small></p></section>";
+      var html = "<section id='v"+verseNum+"'><h2 class='arabic uthmani'></h2><p class='translation'></p><p><small>"+surah+":"+verse+"</small></p></section>";
       $(container).append(html);
     },
 
@@ -85,36 +85,50 @@ var quranSlides = function(config){
       });
     },
 
+    /**
+     * Gets the verses from quran name using ajax for the specified surah.
+     * Note: Updates the slide with the contents of these verses.
+     */
+    getVerses: function(quranName, surah, startVerse, endVerse, onDone){
+      var quranNameProper = 'quran-'+quranName;
+
+      $.ajax({
+        url :"http://api.globalquran.com/surah/"+surah+"/"+quranNameProper,
+        data: {jsoncallback:true, format: 'jsonp'},
+        dataType :"jsonp",
+        cache: true,
+        jsonpCallback: 'quranData',
+        success : function(data){
+          var start = Quran.verseNo.ayah(surah, startVerse);
+          var end = Quran.verseNo.ayah(surah, endVerse);
+          debugger;
+          for(var v = start; v<=end; v++){
+            console.log("v: "+v);
+            verseText = data.quran[quranNameProper][v].verse;
+            $('#v'+v+' .'+quranName).html(verseText);
+          }
+          onDone();
+        },
+        error : function(httpReq,status,exception){
+          console.log(status+" "+exception);
+        }
+      });
+    },
+
     onReady: function(){
       var verseRequest = this.parseVersesRequest(window.location.search);
       var doRange = false;
       var doVerse = false;
       var doSurah = !isNaN(verseRequest.surah);
+      var quranName = 'quran-uthmani'; //en.shakir
       if(doSurah && verseRequest.type != 'error'){
         doRange = (verseRequest.type == 'range' && !isNaN(verseRequest.startVerse) && !isNaN(verseRequest.endVerse));
         if(doSurah){
           var endVerse = doRange? verseRequest.endVerse : verseRequest.startVerse;
           var startVerse = verseRequest.startVerse;
           this.createSlideSequence(verseRequest.surah, startVerse, endVerse);
-          $.ajax({
-            url :"http://api.globalquran.com/surah/"+verseRequest.surah+"/en.shakir",
-            data: {jsoncallback:true, format: 'jsonp'},
-            dataType :"jsonp",
-            cache: true,
-            jsonpCallback: 'quranData',
-            success : function(data){
-              var start = Quran.verseNo.ayah(verseRequest.surah, startVerse);
-              var end = Quran.verseNo.ayah(verseRequest.surah, endVerse);
-              for(var i = start; i<=end; i++){
-                $('.v'+i).html(data.quran['en.shakir'][i].verse);
-              }
-
-              that.doReveal();
-            },
-            error : function(httpReq,status,exception){
-              console.log(status+" "+exception);
-            }
-          });
+          this.getVerses('uthmani', verseRequest.surah, startVerse, endVerse, function(){that.doReveal();});
+          
         }
 
       } else {
