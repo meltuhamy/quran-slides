@@ -4,24 +4,28 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Quran Slides - Make Quran Presentations Easy</title>
+		<title>Quran Slides: Quran Presentations Made Easy</title>
 
-		<meta name="description" content="A simple tool for creating slides with Quran verses.">
+		<meta name="description" content="Quickly and easily create quran presentations.">
 		<meta name="author" content="Mohamed Eltuhamy">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/quran.css" id="theme">
 
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
-		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
 		<script>
-			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
 		</script>
 
 		<!--[if lt IE 9]>
@@ -30,7 +34,7 @@
 	</head>
 
 	<body>
-		<script src="js/reveal.min.js"></script>
+
 		<div class="reveal">
 
 			<!-- Any section element inside of this container is displayed as a slide -->
@@ -40,7 +44,8 @@
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
-		<script src="lib/js/jquery-1.9.1.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="lib/js/Quran.js"></script>
 		<script src="js/quran.js"></script>
 

@@ -63,14 +63,15 @@ var quranSlides = function(config){
     doReveal: function(){
       // Full list of configuration options available here:
       // https://github.com/hakimel/reveal.js#configuration
+
       Reveal.initialize({
         controls: true,
         progress: true,
         history: false,
         center: true,
 
-        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-        transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+        theme: "quran", // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'zoom', // default/cube/page/concave/zoom/linear/fade/none
 
         // Optional libraries used to extend on reveal.js
         dependencies: [
